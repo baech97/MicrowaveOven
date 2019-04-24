@@ -38,7 +38,8 @@ namespace Microwave.Test.Integration
         {
             _cookController.StartCooking(50, 10);
 
-            Assert.That(_output.OutputLine())
+            _output.Received().OutputLine("50");
+
         }
     }
 }
