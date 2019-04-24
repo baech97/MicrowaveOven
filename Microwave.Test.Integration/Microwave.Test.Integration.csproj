@@ -65,7 +65,6 @@
     <Compile Include="Step5.cs" />
     <Compile Include="Step6.cs" />
     <Compile Include="Step7.cs" />
-    <Compile Include="Step8.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicrowaveOvenClasses\MicrowaveOvenClasses.csproj">
