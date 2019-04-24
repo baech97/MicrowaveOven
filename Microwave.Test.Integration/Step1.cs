@@ -33,12 +33,14 @@ namespace Microwave.Test.Integration
             _cookController = new CookController(_timer, _display, _powerTube, _UI);
         }
 
-        [Test]
-        public void Start__CookController_Timer_Powertube__50procent()
+        [TestCase(100)]
+        [TestCase(200)]
+        [TestCase(550)]
+        public void Start__CookController_Timer_Powertube__Power(int s1)
         {
-            _cookController.StartCooking(50, 10);
+            _cookController.StartCooking(s1, 10);
 
-            _output.Received().OutputLine("50");
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString(s1))));
 
         }
     }
