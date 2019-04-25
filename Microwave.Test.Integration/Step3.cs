@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Microwave.Test.Integration
@@ -24,25 +25,37 @@ namespace Microwave.Test.Integration
         private IButton _startCancelButton;
 
         private IOutput _output;
-        private IDoor _door;
+        //private IDoor _door;
+        private Door _door;
 
         [SetUp]
         public void SetUp()
         {
             _output = NSubstitute.Substitute.For<IOutput>();
-            _door = NSubstitute.Substitute.For<IDoor>();
-            _powerButton = NSubstitute.Substitute.For<IButton>();
+            //_door = NSubstitute.Substitute.For<IDoor>();
             _powerButton = NSubstitute.Substitute.For<IButton>();
             _timeButton = NSubstitute.Substitute.For<IButton>();
             _startCancelButton = NSubstitute.Substitute.For<IButton>();
 
+            _door = new Door();
+            
 
-            _cookController = new CookController(_timer, _display, _powerTube);
             _display = new Display(_output);
             _timer = new Timer();
             _powerTube = new PowerTube(_output);
-            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
+            _cookController = new CookController(_timer, _display, _powerTube);
             _light = new Light(_output);
+            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
+
+        [Test]
+        public void DoorOpened__UserInterface_Light_on()
+        {
+            _door.Open();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned on")));
+        }
+
+
+
     }
 }
