@@ -43,5 +43,28 @@ namespace Microwave.Test.Integration
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString(s1))));
 
         }
+
+        [Test]
+        public void Stop_CookController_Timer_Powertube_Is_Stopped()
+        { 
+            _cookController.StartCooking(100,10);
+            _cookController.Stop();
+            
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
+        }
+
+        [Test]
+        public void OnTimerTick_CookController_Timer_Powertube__Power()
+        {
+
+        }
+
+        [Test]
+        public void OnTimerExpired_CookController_Timer_Powertube__Power()
+        {
+
+        }
+
+        
     }
 }
