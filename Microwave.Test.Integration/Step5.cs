@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Microwave.Test.Integration
 {
+    [TestFixture]
     class Step5
     {
         private UserInterface _UI;
@@ -43,6 +44,24 @@ namespace Microwave.Test.Integration
             _powerTube = new PowerTube(_output);
             _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
             _light = new Light(_output);
+        }
+
+        [Test]
+        public void StartCooking__UI_CookController__navn()
+        {
+
+        }
+
+        [Test]
+        public void CookingIsDone__UI_CookController__navn()
+        {
+
+        }
+
+        [Test]
+        public void Stop__UI_CookController__navn()
+        {
+
         }
     }
 }
