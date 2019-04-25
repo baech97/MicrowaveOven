@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Microwave.Test.Integration
@@ -29,8 +30,9 @@ namespace Microwave.Test.Integration
         [SetUp]
         public void SetUp()
         {
-            _cookController = new CookController(_timer, _display, _powerTube);
-            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _ligth, _cookController);
+            _door = NSubstitute.Substitute.For<IDoor>();
+            _output = NSubstitute.Substitute.For<IOutput>();
+
             _display = new Display(_output);
             _powerTube = new PowerTube(_output);
             _ligth = new Light(_output);
@@ -38,10 +40,40 @@ namespace Microwave.Test.Integration
             _powerButton = new Button();
             _timeButton = new Button();
             _startCancelButton = new Button();
+            _cookController = new CookController(_timer, _display, _powerTube);
+            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _ligth, _cookController);
+        }
 
-            _door = NSubstitute.Substitute.For<IDoor>();
-            _output = NSubstitute.Substitute.For<IOutput>();
+        [Test]
+        public void powerButton__UserInterface_Display_Output()
+        {
+            _powerButton.Press();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 50 W")));
+        }
 
+        [Test]
+        public void startCancelButton__UserInterface_Light_Turned_on_Output()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned on")));
+        }
+        [Test]
+        public void startCancelButton__UserInterface_Display_Output_Time_is_1Min()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("01:00")));
+        }
+        [Test]
+        public void startCancelButton__UserInterface_Display_Output_Power_is_50()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("50")));
         }
     }
 }
