@@ -47,6 +47,13 @@ namespace Microwave.Test.Integration
             _door.Open();
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned on")));
         }
-        
+        [Test]
+        public void DoorOpened__Door_UserInterface_Light_off()
+        {
+            _door.Open();
+            _door.Close();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
+        }
+
     }
 }
