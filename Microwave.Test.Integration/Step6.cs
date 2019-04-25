@@ -9,7 +9,7 @@ namespace Microwave.Test.Integration
 {
     class Step6
     {
-        private XXXXXXXXXXXXX sut;
+        
 
         [SetUp]
         public void SetUp()
