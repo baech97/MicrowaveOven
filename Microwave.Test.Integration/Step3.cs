@@ -19,13 +19,12 @@ namespace Microwave.Test.Integration
         private Display _display;
         private PowerTube _powerTube;
         private Timer _timer;
-        
+        private Door _door;
+
         private IButton _powerButton;
         private IButton _timeButton;
         private IButton _startCancelButton;
-
         private IOutput _output;
-        private Door _door;
 
         [SetUp]
         public void SetUp()
@@ -36,8 +35,6 @@ namespace Microwave.Test.Integration
             _startCancelButton = NSubstitute.Substitute.For<IButton>();
 
             _door = new Door();
-            
-
             _display = new Display(_output);
             _timer = new Timer();
             _powerTube = new PowerTube(_output);
@@ -54,12 +51,11 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void DoorClosed__UserInterface_Light_off()
+        public void DoorClosed__UserInterface_Light_Off()
         {
             _UI.OnDoorOpened(this, EventArgs.Empty);
             _UI.OnDoorClosed(this, EventArgs.Empty);
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
         }
-
     }
 }

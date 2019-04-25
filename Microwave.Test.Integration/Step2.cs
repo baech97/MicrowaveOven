@@ -35,7 +35,7 @@ namespace Microwave.Test.Integration
         [Test]
         public void ShowTime__CookController_Display__navn()
         {
-            _cookController.OnTimerTick();
+            //_cookController.OnTimerTick();
 
 
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("Display shows: "))));
