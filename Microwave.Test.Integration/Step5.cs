@@ -21,7 +21,7 @@ namespace Microwave.Test.Integration
 
         private IButton _powerButton;
         private IButton _timeButton;
-        private IButton _startCancelButton;
+        private IButton _startCancelButton; //rigtig stub
 
         private IOutput _output;
         private IDoor _door;
