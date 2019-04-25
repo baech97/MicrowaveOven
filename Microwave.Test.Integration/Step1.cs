@@ -44,6 +44,15 @@ namespace Microwave.Test.Integration
 
         }
 
+        //[TestCase(49)]
+        //[TestCase(701)]
+        //public void Start_CookController_Timer_Powertube__OutOfRangeException(int s1)
+        //{
+        //    _cookController.StartCooking(s1, 10);
+
+        //    Assert.That(_output.Received(),Is.Null);
+        //}
+
         [Test]
         public void Stop_CookController_Timer_Powertube_Is_Stopped()
         { 
@@ -53,18 +62,20 @@ namespace Microwave.Test.Integration
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
         }
 
-        [Test]
-        public void OnTimerTick_CookController_Timer_Powertube__Power()
-        {
-
-        }
-
-        [Test]
-        public void OnTimerExpired_CookController_Timer_Powertube__Power()
-        {
-
-        }
-
         
+
+        [Test]
+        public void OnTimerTick_CookController_Timer_Powertube__navn()
+        {
+            
+        }
+
+
+        [Test]
+        public void OnTimerExpired_CookController_Timer_Powertube__navn()
+        {
+        }
+
+
     }
 }
