@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Microwave.Test.Integration
@@ -39,5 +40,64 @@ namespace Microwave.Test.Integration
             _cookController = new CookController(_timer, _display, _powerTube);
             _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
+
+        [Test]
+        public void ShowPower__UserInterface_Display_DisplayShows50()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 50 W")));
+        }
+
+        [Test]
+        public void ShowPower__UserInterface_Display_DisplayShows100()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 100 W")));
+        }
+
+        [Test]
+        public void ShowPower__UserInterface_Display_DisplayShows700()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 700 W")));
+        }
+
+        [Test]
+        public void ShowTime__UserInterface_Display_DisplayShows0100()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty); //power skal indstilles inden man kan indstille tiden
+            _UI.OnTimePressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 01:00")));
+        }
+
+        [Test]
+        public void ShowTime__UserInterface_Display_DisplayShows0200()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty); 
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 02:00")));
+        }
+
+
+
     }
 }
