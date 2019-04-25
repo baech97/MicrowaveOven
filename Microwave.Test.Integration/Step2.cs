@@ -31,5 +31,18 @@ namespace Microwave.Test.Integration
             _powerTube = new PowerTube(_output);
             _cookController = new CookController(_timer, _display, _powerTube, _UI);
         }
+
+        [Test]
+        public void ShowTime__CookController_Display__navn()
+        {
+            _cookController.OnTimerTick();
+
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("Display shows: "))));
+
+        }
+
+
+
     }
 }
