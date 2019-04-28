@@ -22,8 +22,9 @@ namespace Microwave.Test.Unit
         [Test]
         public void TurnOn_WasOff_CorrectOutput()
         {
+            //Da der er ændret i powertube fra procent til watt, skal der ikke stå % tegn
             uut.TurnOn(50);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("50 %")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("50")));
         }
 
         [Test]
@@ -57,7 +58,8 @@ namespace Microwave.Test.Unit
         [Test]
         public void TurnOn_HighPower_ThrowsException()
         {
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => uut.TurnOn(101));
+            //Ændret fra 101 til 701, da vi har ændret powertube fra procent til watt
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => uut.TurnOn(701));
         }
 
         [Test]
