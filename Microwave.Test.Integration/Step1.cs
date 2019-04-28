@@ -41,7 +41,6 @@ namespace Microwave.Test.Integration
             _cookController.StartCooking(s1, 10);
 
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString(s1))));
-
         }
 
         //[TestCase(49)]

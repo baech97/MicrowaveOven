@@ -32,17 +32,16 @@ namespace Microwave.Test.Integration
             _cookController = new CookController(_timer, _display, _powerTube, _UI);
         }
 
-        [Test]
-        public void ShowTime__CookController_Display__navn()
+        [TestCase(0,"00:00")]
+        [TestCase(10, "00:10")]
+        [TestCase(100, "01:40")]
+        [TestCase(200, "03:20")]
+        [TestCase(500, "08:20")]
+        public void ShowTime__CookController_Display__OnTimerTick(int s1, string s2)
         {
-            //_cookController.OnTimerTick();
-
-
-            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("Display shows: "))));
-
+            _cookController.StartCooking(100, s1);
+            _cookController.OnTimerTick(this, EventArgs.Empty);
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("Display shows: " + s2))));
         }
-
-
-
     }
 }
