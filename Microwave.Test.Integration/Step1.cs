@@ -45,58 +45,65 @@ namespace Microwave.Test.Integration
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString(s1))));
         }
 
-        //[TestCase(49)]
-        //[TestCase(701)]
-        //public void Start_CookController_Timer_Powertube__OutOfRangeException(int s1)
-        //{
-        //    _cookController.StartCooking(s1, 10);
-
-        //    Assert.That(_output.Received(),Is.Null);
-        //}
-
         [Test]
-        public void Stop__CookController_Timer_Powertube_Is_Stopped()
-        { 
-            _cookController.StartCooking(100,10);
-            _cookController.Stop();
+        public void Stop__CookController_Timer_Powertube_Is_TurnedOff()
+        {
+            ManualResetEvent _pause = new ManualResetEvent(false);
+            _cookController.StartCooking(100,5);
+            _pause.WaitOne(5100);
             
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
         }
 
-        [TestCase(500, 8, 15)]
-        [TestCase(10, 0, 5)]
-        [TestCase(200, 3, 15)]
-        [TestCase(100, 1, 35)]
-        public void StartCooking__CookController_Timer__Display_ShowsCorretTime(int s1, int s2, int s3)
+        [Test]
+        public void Stop__CookController_Timer_Powertube_IsNot_TurnedOff()
+        {
+            ManualResetEvent _pause = new ManualResetEvent(false);
+            _cookController.StartCooking(100,5);
+            _pause.WaitOne(3100);
+            
+            _output.DidNotReceive().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
+        }
+
+        [TestCase(500, 8, 14)]
+        [TestCase(10, 0, 4)]
+        [TestCase(200, 3, 14)]
+        [TestCase(100, 1, 34)]
+        public void StartCooking__CookController_Timer__Wait6Seconds__Display_ShowsCorrectTime(int s1, int s2, int s3)
         {
             ManualResetEvent _pause = new ManualResetEvent(false);
 
             _cookController.StartCooking(500, s1);
-            _pause.WaitOne(5100);
+            _pause.WaitOne(6100);
 
-            _display.Received(1).ShowTime(s2, s3);
+            _display.Received().ShowTime(s2, s3);
         }
 
 
         [Test]
-        public void OnTimerTick_CookController_Timer_Powertube__navn()
+        public void OnTimerTick_CookController_Timer_Powertube__UI_CookingIsDone()
         {
-            ManualResetEvent pause = new ManualResetEvent(false);
-            _cookController.StartCooking(100,10);
+            ManualResetEvent _pause = new ManualResetEvent(false);
+            _cookController.StartCooking(100,2);
 
+            _pause.WaitOne(2100);
 
+            _UI.Received().CookingIsDone();
             
-
         }
-
 
         [Test]
-        public void OnTimerExpired_CookController_Timer_Powertube__navn()
+        public void OnTimerTick_CookController_Timer_Powertube__UI_CookingIsNotDone()
         {
-            _cookController.StartCooking(500, 0);
-            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
+            ManualResetEvent _pause = new ManualResetEvent(false);
+            _cookController.StartCooking(100,2);
 
+            _pause.WaitOne(1100);
+
+            _UI.DidNotReceive().CookingIsDone();
+            
         }
+
 
         
         
