@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NUnit.Framework;
 using NSubstitute;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -60,20 +62,29 @@ namespace Microwave.Test.Integration
             
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
         }
-
         
-
         [Test]
         public void OnTimerTick_CookController_Timer_Powertube__navn()
         {
+            ManualResetEvent pause = new ManualResetEvent(false);
+            _cookController.StartCooking(100,10);
+
+
             
+
         }
 
 
         [Test]
         public void OnTimerExpired_CookController_Timer_Powertube__navn()
         {
+            _cookController.StartCooking(500, 0);
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
+
         }
+
+        
+        
 
 
     }
