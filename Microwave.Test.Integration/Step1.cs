@@ -38,7 +38,7 @@ namespace Microwave.Test.Integration
         [TestCase(100)]
         [TestCase(200)]
         [TestCase(550)]
-        public void Start__CookController_Timer_Powertube__Power(int s1)
+        public void StartCooking__CookController_Timer_Powertube__CorrectPower(int s1)
         {
             _cookController.StartCooking(s1, 10);
 
@@ -56,14 +56,29 @@ namespace Microwave.Test.Integration
         //}
 
         [Test]
-        public void Stop_CookController_Timer_Powertube_Is_Stopped()
+        public void Stop__CookController_Timer_Powertube_Is_Stopped()
         { 
             _cookController.StartCooking(100,10);
             _cookController.Stop();
             
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
         }
-        
+
+        [TestCase(500, 8, 15)]
+        [TestCase(10, 0, 5)]
+        [TestCase(200, 3, 15)]
+        [TestCase(100, 1, 35)]
+        public void StartCooking__CookController_Timer__Display_ShowsCorretTime(int s1, int s2, int s3)
+        {
+            ManualResetEvent _pause = new ManualResetEvent(false);
+
+            _cookController.StartCooking(500, s1);
+            _pause.WaitOne(5100);
+
+            _display.Received(1).ShowTime(s2, s3);
+        }
+
+
         [Test]
         public void OnTimerTick_CookController_Timer_Powertube__navn()
         {

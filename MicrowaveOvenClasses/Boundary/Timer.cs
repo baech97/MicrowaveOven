@@ -19,7 +19,8 @@ namespace MicrowaveOvenClasses.Boundary
             timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerEvent);
             timer.Interval = 1000; // 1 second intervals
             timer.AutoReset = true;  // Repeatable timer
-        }
+
+         }
 
 
         public void Start(int time)
@@ -43,8 +44,9 @@ namespace MicrowaveOvenClasses.Boundary
         {
             // One tick has passed
             // Do what I should
-            TimeRemaining -= 1000;
-            TimerTick?.Invoke(this, EventArgs.Empty);
+            TimeRemaining -= 1;
+
+           TimerTick?.Invoke(this, EventArgs.Empty);
 
             if (TimeRemaining <= 0)
             {
