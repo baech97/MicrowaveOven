@@ -33,10 +33,10 @@ namespace Microwave.Test.Integration
         }
 
         [TestCase(0,"00:00")]
-        [TestCase(10000, "00:10")]
-        [TestCase(100000, "01:40")]
-        [TestCase(200000, "03:20")]
-        [TestCase(500000, "08:20")]
+        [TestCase(10, "00:10")]
+        [TestCase(100, "01:40")]
+        [TestCase(200, "03:20")]
+        [TestCase(500, "08:20")]
         public void ShowTime__CookController_Display__OnTimerTick(int s1, string s2)
         {
             _cookController.StartCooking(100, s1);

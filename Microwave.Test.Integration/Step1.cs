@@ -65,10 +65,10 @@ namespace Microwave.Test.Integration
             _output.DidNotReceive().OutputLine(Arg.Is<string>(t => t.Contains(Convert.ToString("PowerTube turned off"))));
         }
 
-        [TestCase(500000, 8, 14)]
-        [TestCase(10000, 0, 4)]
-        [TestCase(200000, 3, 14)]
-        [TestCase(100000, 1, 34)]
+        [TestCase(500, 8, 14)]
+        [TestCase(10, 0, 4)]
+        [TestCase(200, 3, 14)]
+        [TestCase(100, 1, 34)]
         public void StartCooking__CookController_Timer__Wait6Seconds__Display_ShowsCorrectTime(int s1, int s2, int s3)
         {
             ManualResetEvent _pause = new ManualResetEvent(false);

@@ -49,6 +49,7 @@ namespace Microwave.Test.Integration
             //_light = new Light(_output);
             _cookController = new CookController(_timer, _display, _powerTube);
             _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
+            _cookController.UI = _UI; //pga. dobbelt association
         }
 
         [Test]
@@ -98,46 +99,28 @@ namespace Microwave.Test.Integration
         [Test]
         public void CookingIsDone__UI_CookController__ClearDisplay() 
         {
-            //ManualResetEvent _pause = new ManualResetEvent(false);
-
-            //_powerButton.Press();
-            //_timeButton.Press();
-            //_startCancelButton.Press();
 
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
             _UI.OnStartCancelPressed(this, EventArgs.Empty);
 
-            //_UI.CookingIsDone();
-            //_timer.Expired += (sender, args) => _pause.Set();
             _timer.Expired += Raise.EventWith(this, EventArgs.Empty); 
-            
-            //_cookController.OnTimerExpired(this, EventArgs.Empty);
-            //_cookController.StartCooking(50,1);
-            //_pause.WaitOne(60100);
-            //_cookController.OnTimerExpired(this, EventArgs.Empty);
-            //_UI.CookingIsDone();
-            _light.Received().TurnOff();
-            //_display.Received(1).Clear();
 
-            //_output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display cleared")));
+            _display.Received(1).Clear();
+
         }
 
         [Test]
         public void CookingIsDone__UI_CookController__TurnOffLight()
         {
-            //_UI.OnPowerPressed(this, EventArgs.Empty);
-            //_UI.OnTimePressed(this, EventArgs.Empty);
-            //_UI.OnStartCancelPressed(this, EventArgs.Empty);
-            ManualResetEvent _pause = new ManualResetEvent(false);
-            _cookController.StartCooking(50,60);
-            //_pause.WaitOne(60100);
-            //_cookController.OnTimerExpired(this, EventArgs.Empty);
-            //_powerTube.Received().TurnOff();
-            //_display.Clear();
-            //_light.TurnOff();
+
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _timer.Expired += Raise.EventWith(this, EventArgs.Empty); 
+
             _light.Received().TurnOff();
-            //_output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
         }
 
     }
