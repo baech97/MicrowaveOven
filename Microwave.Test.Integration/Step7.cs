@@ -55,5 +55,6 @@ namespace Microwave.Test.Integration
             _door.Close();
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
         }
+
     }
 }

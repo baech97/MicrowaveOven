@@ -45,35 +45,36 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void powerButton__UserInterface_Display_Output()
+        public void PowerButton__UserInterface_Display_OutputCorrect()
         {
             _powerButton.Press();
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 50 W")));
         }
 
         [Test]
-        public void startCancelButton__UserInterface_Light_Turned_on_Output()
+        public void TimeButton__UserInterface_Display_OutputCorrect()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 01:00")));
+        }
+
+        [Test]
+        public void StartCancelButton__UserInterface_Light_Turned_on_Output()
         {
             _powerButton.Press();
             _timeButton.Press();
             _startCancelButton.Press();
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned on")));
         }
+
         [Test]
-        public void startCancelButton__UserInterface_Display_Output_Time_is_1Min()
+        public void StartCancelButton__UserInterface_Display_Output_Power_is_50()
         {
             _powerButton.Press();
             _timeButton.Press();
             _startCancelButton.Press();
-            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("01:00")));
-        }
-        [Test]
-        public void startCancelButton__UserInterface_Display_Output_Power_is_50()
-        {
-            _powerButton.Press();
-            _timeButton.Press();
-            _startCancelButton.Press();
-            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("50")));
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("PowerTube works with 50 watt")));
         }
     }
 }

@@ -57,5 +57,42 @@ namespace Microwave.Test.Integration
             _UI.OnDoorClosed(this, EventArgs.Empty);
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
         }
+
+        [Test]
+        public void StartPressed__UserInterface_Light__TurnedOn()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned on")));
+        }
+
+        [Test]
+        public void Cooking_CancelPressed__UserInterface_Light__TurnedOff()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
+
+            // ifølge sekvensdiagrammet for extension 3, burde der ikke komme en logline når der trykkes cancel imens den tilbereder, men det gør der.
+
+        }
+
+        [Test]
+        public void CookingIsDone__UserInterface_Light__TurnedOff()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty); 
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+            
+            _UI.CookingIsDone();
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Light is turned off")));
+
+        }
     }
 }

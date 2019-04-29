@@ -52,19 +52,53 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void StartCooking__UI_CookController__PowerTuberTurnsOn()
+        public void StartCooking__UI_CookController__TimerStarts()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+            _timer.Received().Start(60);
+        }
+
+        [Test]
+        public void StartCooking__UI_CookController__PowerTubeTurnsOn()
         {
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
             _UI.OnStartCancelPressed(this, EventArgs.Empty);
             _powerTube.Received().TurnOn(50);
-            //_output.Received().OutputLine(Arg.Is<string>(t => t.Contains("PowerTube works with 50 watt")));
+        }
+
+        [Test]
+        public void Cooking_DoorOpens__UI_CookController__TimerStops_PowerTubeTurnsOff()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _UI.OnDoorOpened(this, EventArgs.Empty);
+
+            _timer.Received().Stop();
+            _powerTube.Received().TurnOff();
+        }
+
+        [Test]
+        public void Cooking_CancelPressed__UI_CookController__TimerStops_PowerTubeTurnsOff()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _timer.Received().Stop();
+            _powerTube.Received().TurnOff();
         }
 
         [Test]
         public void CookingIsDone__UI_CookController__ClearDisplay() 
         {
-            ManualResetEvent _pause = new ManualResetEvent(false);
+            //ManualResetEvent _pause = new ManualResetEvent(false);
 
             //_powerButton.Press();
             //_timeButton.Press();
@@ -73,6 +107,8 @@ namespace Microwave.Test.Integration
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
             _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            //_UI.CookingIsDone();
             //_timer.Expired += (sender, args) => _pause.Set();
             _timer.Expired += Raise.EventWith(this, EventArgs.Empty); 
             
@@ -95,7 +131,7 @@ namespace Microwave.Test.Integration
             //_UI.OnStartCancelPressed(this, EventArgs.Empty);
             ManualResetEvent _pause = new ManualResetEvent(false);
             _cookController.StartCooking(50,60);
-            _pause.WaitOne(60100);
+            //_pause.WaitOne(60100);
             //_cookController.OnTimerExpired(this, EventArgs.Empty);
             //_powerTube.Received().TurnOff();
             //_display.Clear();

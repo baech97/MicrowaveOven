@@ -46,9 +46,9 @@ namespace Microwave.Test.Unit
         [Test]
         public void Cooking_TimerTick_DisplayCalled()
         {
-            uut.StartCooking(50, 60);
+            uut.StartCooking(50, 60000); //ændret til millisekunder
 
-            timer.TimeRemaining.Returns(115);
+            timer.TimeRemaining.Returns(115000); //ændret til millisekunder
             timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
             display.Received().ShowTime(1, 55);

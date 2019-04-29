@@ -97,7 +97,28 @@ namespace Microwave.Test.Integration
             _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display shows: 02:00")));
         }
 
+        [Test]
+        public void CookingIsDone__UserInterface_Display__DisplayCleared()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty); 
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+            
+            _UI.CookingIsDone();
 
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display cleared")));
+        }
+
+        [Test]
+        public void Cooking_CancelPressed__UserInterface_Display__DisplayCleared()
+        {
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display cleared")));
+        }
 
     }
 }
