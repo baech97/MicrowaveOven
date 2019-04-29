@@ -18,7 +18,7 @@ namespace Microwave.Test.Integration
         private CookController _cookController;
         private Display _display;
         private PowerTube _powerTube;
-        private Light _ligth;
+        private Light _light;
         private Timer _timer;
         private Button _powerButton;
         private Button _timeButton;
@@ -35,13 +35,13 @@ namespace Microwave.Test.Integration
 
             _display = new Display(_output);
             _powerTube = new PowerTube(_output);
-            _ligth = new Light(_output);
+            _light = new Light(_output);
             _timer = new Timer();
             _powerButton = new Button();
             _timeButton = new Button();
             _startCancelButton = new Button();
             _cookController = new CookController(_timer, _display, _powerTube);
-            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _ligth, _cookController);
+            _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
 
         [Test]

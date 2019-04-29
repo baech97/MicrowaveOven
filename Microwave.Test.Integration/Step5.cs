@@ -18,9 +18,7 @@ namespace Microwave.Test.Integration
     {
         public UserInterface _UI;
         private CookController _cookController;
-        //private Light _light;
-        //private Display _display;
-        //private Timer _timer;
+     
         private IButton _startCancelButton;
         private ITimer _timer;
         private ILight _light;
@@ -44,9 +42,6 @@ namespace Microwave.Test.Integration
             _timer = NSubstitute.Substitute.For<ITimer>();
             _startCancelButton = NSubstitute.Substitute.For<IButton>();
 
-            //_display = new Display(_output);
-            //_timer = new Timer();
-            //_light = new Light(_output);
             _cookController = new CookController(_timer, _display, _powerTube);
             _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
             _cookController.UI = _UI; //pga. dobbelt association

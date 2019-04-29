@@ -20,6 +20,7 @@ namespace Microwave.Test.Integration
         private Display _display;
         private PowerTube _powerTube;
         private Timer _timer;
+
         private IOutput _output;
         private IButton _powerButton;
         private IButton _timeButton;
