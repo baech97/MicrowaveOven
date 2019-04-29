@@ -66,25 +66,26 @@ namespace Microwave.Test.Integration
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
             _UI.OnStartCancelPressed(this, EventArgs.Empty);
-            ManualResetEvent _pause = new ManualResetEvent(false);
+          //  ManualResetEvent _pause = new ManualResetEvent(false);
             //_cookController.StartCooking(50,1);
-            _pause.WaitOne(60100);
+           // _pause.WaitOne(60100);
             //_cookController.OnTimerExpired(this, EventArgs.Empty);
             //_powerTube.Received().TurnOff();
             //_display.Clear();
             //_light.TurnOff();
             _display.Received().Clear();
+            _light.Received().TurnOff();
             //_output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display cleared")));
         }
 
         [Test]
         public void CookingIsDone__UI_CookController__TurnOffLight()
         {
-            //_UI.OnPowerPressed(this, EventArgs.Empty);
-            //_UI.OnTimePressed(this, EventArgs.Empty);
-            //_UI.OnStartCancelPressed(this, EventArgs.Empty);
+            _UI.OnPowerPressed(this, EventArgs.Empty);
+            _UI.OnTimePressed(this, EventArgs.Empty);
+            _UI.OnStartCancelPressed(this, EventArgs.Empty);
             ManualResetEvent _pause = new ManualResetEvent(false);
-            _cookController.StartCooking(50,60);
+           // _cookController.StartCooking(50,60);
             _pause.WaitOne(60100);
             //_cookController.OnTimerExpired(this, EventArgs.Empty);
             //_powerTube.Received().TurnOff();
