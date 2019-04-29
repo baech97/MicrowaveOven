@@ -16,13 +16,13 @@ namespace Microwave.Test.Integration
     [TestFixture]
     class Step5
     {
-        private UserInterface _UI;
+        public UserInterface _UI;
         private CookController _cookController;
         //private Light _light;
         //private Display _display;
-        private Timer _timer;
-        private Button _startCancelButton;
-
+        //private Timer _timer;
+        private IButton _startCancelButton;
+        private ITimer _timer;
         private ILight _light;
         private IDisplay _display;
         private IButton _powerButton;
@@ -41,17 +41,18 @@ namespace Microwave.Test.Integration
             _door = NSubstitute.Substitute.For<IDoor>();
             _display = NSubstitute.Substitute.For<IDisplay>();
             _light = NSubstitute.Substitute.For<ILight>();
+            _timer = NSubstitute.Substitute.For<ITimer>();
+            _startCancelButton = NSubstitute.Substitute.For<IButton>();
 
             //_display = new Display(_output);
-            _timer = new Timer();
+            //_timer = new Timer();
             //_light = new Light(_output);
-            _startCancelButton = new Button();
             _cookController = new CookController(_timer, _display, _powerTube);
             _UI = new UserInterface(_powerButton, _timeButton, _startCancelButton, _door, _display, _light, _cookController);
         }
 
         [Test]
-        public void StartCooking__UI_CookController__navn()
+        public void StartCooking__UI_CookController__PowerTuberTurnsOn()
         {
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
@@ -63,17 +64,26 @@ namespace Microwave.Test.Integration
         [Test]
         public void CookingIsDone__UI_CookController__ClearDisplay() 
         {
+            ManualResetEvent _pause = new ManualResetEvent(false);
+
+            //_powerButton.Press();
+            //_timeButton.Press();
+            //_startCancelButton.Press();
+
             _UI.OnPowerPressed(this, EventArgs.Empty);
             _UI.OnTimePressed(this, EventArgs.Empty);
             _UI.OnStartCancelPressed(this, EventArgs.Empty);
-            ManualResetEvent _pause = new ManualResetEvent(false);
-            //_cookController.StartCooking(50,1);
-            _pause.WaitOne(60100);
+            //_timer.Expired += (sender, args) => _pause.Set();
+            _timer.Expired += Raise.EventWith(this, EventArgs.Empty); 
+            
             //_cookController.OnTimerExpired(this, EventArgs.Empty);
-            //_powerTube.Received().TurnOff();
-            //_display.Clear();
-            //_light.TurnOff();
-            _display.Received().Clear();
+            //_cookController.StartCooking(50,1);
+            //_pause.WaitOne(60100);
+            //_cookController.OnTimerExpired(this, EventArgs.Empty);
+            //_UI.CookingIsDone();
+            _light.Received().TurnOff();
+            //_display.Received(1).Clear();
+
             //_output.Received().OutputLine(Arg.Is<string>(t => t.Contains("Display cleared")));
         }
 
